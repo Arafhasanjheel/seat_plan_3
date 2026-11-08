@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Center Search</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            flex-grow: 1;
+        }
+        h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            width: 80%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        input[type="number"]:focus {
+            border-color: #10b981;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #10b981;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #059669;
+        }
+        #result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #1f2937;
+            color: #d1d5db;
+            font-size: 15px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Exam Center Search</h2>
+        <p>আপনার রোল নাম্বার দিয়ে পরীক্ষার কেন্দ্র খুঁজুন:</p>
+        <input type="number" id="rollInput" placeholder="রোল নাম্বার লিখুন (যেমন: 218833)" required>
+        <br>
+        <button onclick="searchCenter()">Search Center</button>
+
+        <div id="result"></div>
+    </div>
+
+    <footer>
+        Created by Araf Hasan Jheel (SO, ICB)
+    </footer>
+
+    <script>
+        // Data extracted from the image
+        const centers = [
+            {
+                name: "Dhanmondi Government Girls High School", /*[span_1](start_span)[span_1](end_span) */
+                address: "Dhanmondi R/A, Dhaka", /*[span_2](start_span)[span_2](end_span) */
+                start: 218833, /*[span_3](start_span)[span_3](end_span) */
+                end: 221673    /*[span_4](start_span)[span_4](end_span) */
+            },
+            {
+                name: "Tejgaon College", /*[span_5](start_span)[span_5](end_span) */
+                address: "16, Indira Road, Farmgate, Dhaka", /*[span_6](start_span)[span_6](end_span) */
+                start: 221675, /*[span_7](start_span)[span_7](end_span) */
+                end: 230825    /*[span_8](start_span)[span_8](end_span) */
+            },
+            {
+                name: "Tejgaon Govt. High School", /*[span_9](start_span)[span_9](end_span) */
+                address: "42, East Tejturi bajar, Tejgaon, Dhaka.", /*[span_10](start_span)[span_10](end_span) */
+                start: 230826, /*[span_11](start_span)[span_11](end_span) */
+                end: 234245    /*[span_12](start_span)[span_12](end_span) */
+            },
+            {
+                name: "Azimpur Govt. Girls School & College", /*[span_13](start_span)[span_13](end_span) */
+                address: "Azimpur, Dhaka", /*[span_14](start_span)[span_14](end_span) */
+                start: 234246, /*[span_15](start_span)[span_15](end_span) */
+                end: 237923    /*[span_16](start_span)[span_16](end_span) */
+            }
+        ];
+
+        function searchCenter() {
+            const rollInput = document.getElementById('rollInput').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!rollInput) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = 'দয়া করে সঠিক রোল নাম্বার দিন।';
+                return;
+            }
+
+            const roll = parseInt(rollInput, 10);
+            let foundCenter = null;
+
+            for (let i = 0; i < centers.length; i++) {
+                if (roll >= centers[i].start && roll <= centers[i].end) {
+                    foundCenter = centers[i];
+                    break;
+                }
+            }
+
+            resultDiv.style.display = 'block';
+            if (foundCenter) {
+                resultDiv.className = 'success';
+                resultDiv.innerHTML = `<strong>Center:</strong> ${foundCenter.name} <br> <strong>Address:</strong> ${foundCenter.address}`;
+            } else {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = 'এই রোল নাম্বারটি তালিকায় পাওয়া যায়নি।';
+            }
+        }
+    </script>
+</body>
+</html>
